@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  nginx-rtmp:
+    build: .
+    container_name: nginx-rtmp
+    ports:
+      - "1935:1935"      # RTMP Yayını
+      - "8080:80"        # HTTP yayını (HTML sayfası için)
+    volumes:
+      - ./html:/usr/share/nginx/html  # HTML dosyasını doğru dizine kopyalar
+      - ./hls:/tmp/hls                # HLS dosyasını doğru dizine kopyalar
+    restart: unless-stopped
+    networks:
+      - nginx_proxy
+
+networks:
+  nginx_proxy:
+    driver: bridge
